@@ -3,8 +3,11 @@ import datetime
 while True:
     dir = input("検索したいディレクトリ:")
     try:
-        files = os.scandir(dir)
-
+        files = os.walk(dir)
+#        for s,t,u in files:
+#            print("親:"+s)
+#            for File in u:
+#                print("ファイル:"+File)
         break
     except Exception as e:
         print(e)
@@ -19,6 +22,13 @@ while True:
     except:
         print("数字で入力してください！")
 
-for x in files:
-    if datetime.datetime.fromtimestamp(os.stat(dir + "/" + str(x)[11:-2]).st_mtime).weekday() == targ:
-        print(str(x)[11:-2])
+for s,t,u in files:
+    print(s)
+    for Files in u:
+        try:
+            if datetime.datetime.fromtimestamp(os.stat(s+"/"+Files).st_mtime).weekday() == targ:
+                print(s+"/"+Files)
+        except FileNotFoundError:
+                print(s+"/"+Files+"というファイルが検出されましたが壊れているようです？")
+        except Exception as e:
+                print("エラー:"+e)
